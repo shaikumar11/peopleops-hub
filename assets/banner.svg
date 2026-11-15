@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="260" viewBox="0 0 900 260" role="img" aria-label="PeopleOps Hub banner">
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+<stop offset="0" stop-color="#0f2a47"><animate attributeName="stop-color" values="#0f2a47;#1F4E79;#0f2a47" dur="8s" repeatCount="indefinite"/></stop>
+<stop offset="1" stop-color="#1F4E79"><animate attributeName="stop-color" values="#1F4E79;#0f2a47;#1F4E79" dur="8s" repeatCount="indefinite"/></stop></linearGradient></defs>
+<style>text{font-family:Arial,Helvetica,sans-serif}.t{font-size:54px;font-weight:700;fill:#fff}.s{font-size:20px;fill:#cfe3f5}
+.p{font-size:15px;font-weight:700;fill:#fff}.pill{fill:#fff;fill-opacity:.15;stroke:#fff;stroke-opacity:.35}
+.line{fill:none;stroke:#7db8ee;stroke-width:3;stroke-dasharray:6 6;opacity:.7;animation:d 2s linear infinite}
+@keyframes d{to{stroke-dashoffset:-24}}.dot{animation:b 1.6s ease-in-out infinite}@keyframes b{50%{opacity:.2}}</style>
+<rect width="900" height="260" rx="16" fill="url(#g)"/>
+<polyline class="line" points="40,235 140,215 230,226 330,195 430,206 530,175 640,186 760,150 860,160"/>
+<circle class="dot" cx="860" cy="160" r="6" fill="#4ade80"/>
+<text class="t" x="40" y="85">PeopleOps Hub</text>
+<text class="s" x="40" y="122">HR leave and Finance expense approvals with live API telemetry</text>
+<rect class="pill" x="40" y="142" width="120" height="32" rx="16"/><text class="p" x="62" y="163">12 tests</text>
+<rect class="pill" x="172" y="142" width="150" height="32" rx="16"/><text class="p" x="194" y="163">99% coverage</text>
+<rect class="pill" x="334" y="142" width="200" height="32" rx="16"/><text class="p" x="356" y="163">p95 latency tracked</text>
+</svg>
