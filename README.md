@@ -57,7 +57,7 @@ pip install -r requirements.txt
 python -m uvicorn app.main:app --reload
 python -m pytest --cov=app
 ```
-Open http://127.0.0.1:8000. Set `SEED_DEMO=1` to start with sample data.
+Then open `127.0.0.1:8000` in your browser while the server is running on your own computer. Set `SEED_DEMO=1` to start with sample data. To try the app without installing anything, use the live demo above.
 
 ## Built by
 **Shaik Mohammed Umar** · [LinkedIn](https://linkedin.com/in/mohammed-umarshaik) · [GitHub](https://github.com/shaikumar11) · umarshaikno1@gmail.com
