@@ -1,0 +1,84 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PeopleOps Hub</title>
+<style>
+:root{--bg:#f4f6fa;--card:#fff;--tx:#1b2430;--mut:#667085;--line:#e4e8ef;--pri:#1F4E79;--onpri:#fff;--ok:#15803d;--okb:#dcfce7;--wa:#b45309;--wab:#fef3c7;--er:#b91c1c;--erb:#fee2e2;--in:#eef2f8}
+@media(prefers-color-scheme:dark){:root{--bg:#0f1720;--card:#18222d;--tx:#e6edf5;--mut:#93a1b3;--line:#2a3745;--pri:#5aa2e0;--onpri:#0b1620;--ok:#4ade80;--okb:#14391f;--wa:#fbbf24;--wab:#3d2f0a;--er:#f87171;--erb:#431616;--in:#101a24}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.45 Arial,Helvetica,sans-serif}
+header{background:var(--card);border-bottom:1px solid var(--line);padding:12px 24px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.logo{width:34px;height:34px;border-radius:9px;background:var(--pri);color:var(--onpri);display:grid;place-items:center;font-weight:700}
+header h1{font-size:18px;margin:0}header small{color:var(--mut);display:block;font-size:12px}.me{margin-left:auto;display:flex;align-items:center;gap:8px;color:var(--mut)}
+main{max-width:1100px;margin:0 auto;padding:20px 16px 40px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin-bottom:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px}
+.kpi span{color:var(--mut);font-size:12px;text-transform:uppercase;letter-spacing:.04em}.kpi b{display:block;font-size:28px;margin-top:4px}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;margin-bottom:16px}@media(max-width:760px){.grid{grid-template-columns:1fr}}
+h2{font-size:15px;margin:0 0 12px}label{display:block;color:var(--mut);font-size:12px;margin:10px 0 4px}
+input{width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:8px;background:var(--in);color:var(--tx);font:inherit}
+.me input{width:150px}.seg{display:flex;gap:6px}.seg button{flex:1}
+button{padding:9px 14px;border:0;border-radius:8px;background:var(--pri);color:var(--onpri);font:inherit;font-weight:600;cursor:pointer}
+button.ghost{background:transparent;color:var(--tx);border:1px solid var(--line)}button.off{background:var(--in);color:var(--mut);border:1px solid var(--line)}
+.submit{width:100%;margin-top:14px}.hint{color:var(--mut);font-size:12px;margin-top:6px;min-height:16px}
+.tr{display:grid;grid-template-columns:130px 1fr 70px 70px;gap:8px;align-items:center;margin-bottom:10px;font-size:13px}.tr small{color:var(--mut)}
+.bar{background:var(--in);border-radius:6px;height:10px}.bar i{display:block;height:10px;border-radius:6px;background:var(--pri)}
+.chips{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}.chips button{padding:6px 12px;font-weight:500}
+.wrap{overflow-x:auto}table{width:100%;border-collapse:collapse}th{color:var(--mut);font-size:12px;text-align:left;padding:8px;border-bottom:1px solid var(--line)}
+td{padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:middle}.note{color:var(--mut);font-size:12px}
+.av{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--in);border:1px solid var(--line);font-size:11px;font-weight:700;margin-right:8px}
+.tag,.st{padding:3px 9px;border-radius:99px;font-size:12px;font-weight:600;text-transform:capitalize}.tag{background:var(--in);border:1px solid var(--line)}
+.approved{background:var(--okb);color:var(--ok)}.pending{background:var(--wab);color:var(--wa)}.rejected{background:var(--erb);color:var(--er)}
+.act{white-space:nowrap}.act button{padding:6px 10px;margin-right:4px}.empty{color:var(--mut);text-align:center;padding:18px}
+#toast{position:fixed;bottom:20px;left:50%;transform:translate(-50%,20px);background:var(--pri);color:var(--onpri);padding:10px 18px;border-radius:10px;opacity:0;transition:.25s;pointer-events:none}
+#toast.show{opacity:1;transform:translate(-50%,0)}#toast.bad{background:var(--er);color:#fff}
+</style></head><body>
+<header><div class="logo">P</div><div><h1>PeopleOps Hub</h1><small>HR leave and Finance expense approvals</small></div>
+<div class="me">Signed in as <input id="me" value="Meera" aria-label="Your name"></div></header>
+<main>
+<section class="kpis">
+<div class="card kpi"><span>Total requests</span><b id="k1">0</b></div>
+<div class="card kpi"><span>Pending approval</span><b id="k2">0</b></div>
+<div class="card kpi"><span>Approved expenses</span><b id="k3">0</b></div>
+<div class="card kpi"><span>Approved leave days</span><b id="k4">0</b></div></section>
+<section class="grid">
+<form class="card" onsubmit="add(event)"><h2>New request</h2>
+<div class="seg"><button type="button" id="bl" onclick="setKind('leave')">Leave</button><button type="button" id="be" class="off" onclick="setKind('expense')">Expense</button></div>
+<label>Employee</label><input id="emp" placeholder="e.g. Asha" required oninput="bal()">
+<label id="al">Days</label><input id="amt" type="number" min="0.5" step="0.5" required>
+<label>Note</label><input id="note" placeholder="Optional">
+<div class="hint" id="hint"></div><button class="submit">Submit request</button></form>
+<div class="card"><h2>API telemetry (p95 latency)</h2><div id="tel"></div>
+<div class="hint">Leave up to 2 days and expenses up to 1,000 are approved automatically. Larger ones need a manager, and nobody can approve their own request.</div></div>
+</section>
+<section class="card"><h2>Requests</h2>
+<div class="chips" id="chips"></div>
+<div class="wrap"><table><thead><tr><th>Employee</th><th>Type</th><th>Request</th><th>Status</th><th>Decided by</th><th></th></tr></thead><tbody id="rows"></tbody></table></div></section>
+</main><div id="toast"></div>
+<script>
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let filter='all',kind='leave';
+async function api(u,b){const r=await fetch(u,b?{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)}:{});const d=await r.json();if(!r.ok)throw new Error(typeof d.detail==='string'?d.detail:'Please check the form');return d}
+function toast(m,bad){const t=$('#toast');t.textContent=m;t.className='show'+(bad?' bad':'');clearTimeout(toast.h);toast.h=setTimeout(()=>t.className='',3000)}
+const money=n=>'₹'+Number(n).toLocaleString('en-IN');
+const fmt=r=>r.kind==='leave'?r.amount+(r.amount==1?' day':' days'):money(r.amount);
+const row=r=>`<tr><td><span class="av">${esc(r.employee.slice(0,2).toUpperCase())}</span>${esc(r.employee)}</td><td><span class="tag">${r.kind}</span></td><td>${fmt(r)}<div class="note">${esc(r.note||'')}</div></td><td><span class="st ${r.status}">${r.status}</span></td><td>${esc(r.decided_by||'-')}</td><td class="act">${r.status==='pending'?`<button onclick="dec(${r.id},'approve')">Approve</button><button class="ghost" onclick="dec(${r.id},'reject')">Reject</button>`:''}</td></tr>`;
+async function load(){
+ const [rs,sm,mt]=await Promise.all([api('/requests'),api('/summary'),api('/metrics')]);
+ const days=sm.by_kind_status.filter(x=>x.kind==='leave'&&x.status==='approved').reduce((a,x)=>a+x.total,0);
+ $('#k1').textContent=rs.length;$('#k2').textContent=rs.filter(r=>r.status==='pending').length;$('#k3').textContent=money(sm.approved_expense_total);$('#k4').textContent=days;
+ const list=rs.filter(r=>filter==='all'||r.status===filter);
+ $('#rows').innerHTML=list.length?list.map(row).join(''):'<tr><td colspan="6" class="empty">No requests here yet</td></tr>';
+ $('#chips').innerHTML=['all','pending','approved','rejected'].map(f=>`<button class="${f===filter?'':'off'}" onclick="setFilter('${f}')">${f[0].toUpperCase()+f.slice(1)}</button>`).join('');
+ const rt=Object.entries(mt).filter(([k])=>k!=='/favicon.ico');const mx=Math.max(1,...rt.map(([,v])=>v.p95_ms));
+ $('#tel').innerHTML=rt.length?rt.map(([k,v])=>`<div class="tr"><span>${esc(k)}</span><div class="bar"><i style="width:${Math.max(4,v.p95_ms/mx*100)}%"></i></div><b>${v.p95_ms} ms</b><small>${v.count} calls</small></div>`).join(''):'<div class="empty">No traffic yet</div>';
+}
+function setFilter(f){filter=f;load()}
+function setKind(k){kind=k;$('#bl').className=k==='leave'?'':'off';$('#be').className=k==='expense'?'':'off';$('#al').textContent=k==='leave'?'Days':'Amount (₹)';bal()}
+async function bal(){const n=$('#emp').value.trim();if(kind!=='leave'||!n){$('#hint').textContent='';return}
+ try{const d=await api('/employees/'+encodeURIComponent(n)+'/leave-balance');$('#hint').textContent=n+' has '+d.remaining_days+' leave days left'}catch(e){}}
+async function add(e){e.preventDefault();
+ try{const r=await api('/requests',{employee:$('#emp').value.trim(),kind,amount:+$('#amt').value,note:$('#note').value.trim()});
+ toast(r.status==='approved'?'Approved automatically':'Sent for manager approval');$('#amt').value='';$('#note').value='';bal()}catch(x){toast(x.message,1)}load()}
+async function dec(id,action){const approver=$('#me').value.trim();if(!approver)return toast('Enter your name in Signed in as',1);
+ try{await api('/requests/'+id+'/decision',{approver,action});toast('Request '+id+(action==='approve'?' approved':' rejected'))}catch(x){toast(x.message,1)}load()}
+load();setInterval(load,8000);
+</script></body></html>

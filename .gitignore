@@ -1,0 +1,5 @@
+venv/
+__pycache__/
+.coverage
+hub.db
+.pytest_cache/
